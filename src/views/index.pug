@@ -1,0 +1,39 @@
+extends layout
+
+block content
+  body.bg-dark.text-light
+
+    header
+      nav.navbar.navbar-expand-lg.navbar-dark.bg-dark
+        div.container-fluid
+          a.navbar-brand(href="#") 
+          button.navbar-toggler(type="button", data-bs-toggle="collapse", data-bs-target="#navbarNav", aria-controls="navbarNav", aria-expanded="false", aria-label="Toggle navigation")
+            span.navbar-toggler-icon
+          div.collapse.navbar-collapse#navbarNav
+            ul.navbar-nav.ms-auto
+              li.nav-item
+                a.nav-link.active(href="#") Início
+              li.nav-item
+                a.nav-link(href="#sobre") Sobre
+              li.nav-item
+                a.nav-link(href="#contato") Contato
+
+    section#banner
+      div.container
+        div.row.align-items-center
+          div.col-md-6.text-center.text-md-start
+            h1(display-1 Confirmação de<br) Confirma Fácil
+            p.lead.white-text
+              | Confirme sua presença conosco e garanta sua participação em eventos especiais. 
+              | Desfrute de uma experiência de confirmação online simples e rápida, proporcionando praticidade e segurança.
+            a.btn.btn-outline-secondary.btn-lg(href="/pessoa/consultar") Confirme sua Presença
+          div.col-md-6.text-center
+            //- img.img-fluid.rounded(src="images/atendendo-telefone.jpeg", alt="Imagem de Confirmação de Presença")
+            span.bi.text-secondary.bi-check-circle(style="font-size: 11rem;")
+
+      //- section#confirmacao-presenca
+      //-   div.container.text-center
+      //-     h2(Confirme Sua Presença.white-text)
+      //-     p.lead.white-text
+      //-       | Confirme sua presença agora e garanta sua participação.
+      //-     a.btn.btn-outline-secondary.btn-lg(href="/pessoa/confirmar") Confirme sua Presença

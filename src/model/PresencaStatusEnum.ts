@@ -1,0 +1,5 @@
+export enum PresencaStatusEnum {
+  COMPARECEU = 'COMPARECEU',
+  AUSENTE = 'AUSENTE',
+  CADASTR_NOVO = 'NOVO CADASTRO'
+}
