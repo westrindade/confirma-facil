@@ -32,10 +32,10 @@ const paths = {
     src: ['src/views/**/*.pug'],
     dest: 'dist/views',
   },
-  // scss: {
-  //   src: 'src/scss/*.scss',
-  //   dest: 'dist/public/css',
-  // },
+  scss: {
+    src: 'src/scss/*.scss',
+    dest: 'dist/public/css',
+  },
 }
 
 // export function generateCSS() {
