@@ -6,6 +6,8 @@ import path from 'path';
 import manifest from './rev-manifest.json';
 import { BaseRoutesConfig } from './routes/base.routes.config';
 import { PessoaRoutes } from './routes/pessoa.routes';
+import { CargoRoutes } from './routes/cargo.routes';
+import { IgrejaRoutes } from './routes/igreja.routes';
 
 //dotenv.config({ path: path.join(__dirname, `.env.${process.env.NODE_ENV}`), debug: true, override: true });
 dotenv.config({ path: path.join(__dirname, `.env.${process.env.NODE_ENV}`), encoding: 'utf8', debug: true, override: true });
@@ -25,8 +27,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/css',express.static(path.join(__dirname, 'scss')));
 app.use('/bundle.js', express.static(path.join(__dirname, `public/js/app/${manifest['bundle.js']}`)));
 
-console.log('public-path',path.join(__dirname, 'public'))
-
 app.use('/js', express.static(path.join(__dirname, 'node_modules/axios/dist')));
 app.use('/css', express.static(path.join(__dirname, 'node_modules/bootstrap/dist/css')));
 app.use('/js', express.static(path.join(__dirname, 'node_modules/bootstrap/dist/js')));
@@ -39,6 +39,8 @@ app.set('view engine', 'pug');
 
 //rotas post
 routes.push(new PessoaRoutes(app));
+routes.push(new CargoRoutes(app))
+routes.push(new IgrejaRoutes(app))
 
 //arquivo config
 const envPath = path.join(__dirname, `.env.development`);

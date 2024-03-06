@@ -8,28 +8,51 @@ block content
 
     section
       div.container
-        h2.text-center Cadastrar Usuário
-        form
-          div.mb-3
-            label.form-label(for="nome") Nome
-            input.form-control.form-control-sm(type="text", id="nome", name="nome", required)
-          div.mb-3
-            label.form-label(for="cpf") Cpf
-            div.input-group
-              input#cpf.form-control.form-control-sm(type="text", name="cpf", placeholder="Cpf", required)
-              span.input-group-text(data-bs-toggle="tooltip", data-bs-placement="top", title="Exemplo: 999.999.999-99") 999.999.999-99
-          div.mb-3
-            label.form-label(for="celular") Celular
-            div.input-group
-              input#celular.form-control.form-control-sm(type="tel", name="celular", placeholder="(99) 99999-9999", required)
-              span.input-group-text(data-bs-toggle="tooltip", data-bs-placement="top", title="Exemplo: (99) 99999-9999") (99) 99999-9999
+        h2.text-center Cadastrar Pessoa
+        div(class="row justify-content-center")
+          div(class="col-md-7 col-sm-12")
+            div(id="alert-list" class="alert alert-danger d-none" role="alert")
+        form(action='/pessoa/new' method='POST' onsubmit='onAdd()')
+          div.row.g-3
+            div.col-md-6
+              div.mb-3
+                label.form-label(for="igrejaSelect") Igreja
+                div.input-group
+                  select#igrejaSelect.form-control.form-control-sm(name="igreja", style="width: 200px;", required)
+                  button.btn.btn-outline-secondary(type="button", data-bs-toggle="tooltip", data-bs-placement="top", title="Escolher Cargo") 
+                    span.bi.bi-chevron-down
+            div.col-md-6
+              div.mb-3
+                label.form-label(for="cargoSelect") Cargo
+                div.input-group
+                  select#cargoSelect.form-control.form-control-sm(name="cargo", style="width: 200px;", required)
+                  button.btn.btn-outline-secondary(type="button", data-bs-toggle="tooltip", data-bs-placement="top", title="Escolher Cargo") 
+                    span.bi.bi-chevron-down
+          div.row.g-3
+            div.col-md-6
+              div.mb-3
+                label.form-label(for="nome") Nome
+                input#nome.form-control.form-control-sm(type="text", name="nome", placeholder="Informe o Nome", required)
+            div.col-md-6
+              div.mb-3
+                label.form-label(for="cpf") CPF
+                div.input-group
+                  input#cpf.form-control.form-control-sm(type="text", name="cpf", placeholder="Informe o CPF", required)
+                  span.input-group-text(data-bs-toggle="tooltip", data-bs-placement="top", title="Exemplo: 999.999.999-99") 999.999.999-99
+          div.row.g-3
+            div.col-md-6
+              div.mb-3
+                label.form-label(for="dataNascimento") Data de Nascimento
+                input#dataNascimento.form-control.form-control-sm(type="date", name="dataNascimento", required)
           div.d-grid.gap-2
-            button(id="btnCadastrar" type="button" class="btn btn-outline-primary" onclick="onConsult()") Cadastrar&nbsp;&nbsp;
+            button(id="btnCadastrar" type="submit" class="btn btn-outline-primary") Cadastrar&nbsp;&nbsp;
             a(id="btnCancelar" type="button" class="btn btn-outline-danger" href="/pessoa/consultar") Cancelar&nbsp;&nbsp;
     script.
-      document.addEventListener('DOMContentLoaded', function () {
-        // Inicializar o Bootstrap Tooltip
-        var tooltips = new bootstrap.Tooltip(document.body, {
-          selector: '[data-bs-toggle="tooltip"]'
-        });
-      });
+      //- script(src="/js/bundle.js")
+      //- script(src="/js/app/igreja.js")
+      //- document.addEventListener('DOMContentLoaded', function () {
+      //-   // Inicializar o Bootstrap Tooltip
+      //-   var tooltips = new bootstrap.Tooltip(document.body, {
+      //-     selector: '[data-bs-toggle="tooltip"]'
+      //-   });
+      //- });

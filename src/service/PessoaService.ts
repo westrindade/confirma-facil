@@ -2,7 +2,8 @@ import { Pessoa } from "../model/Pessoa";
 import { BASE_URL } from "../infra/config";
 import * as XLSX from 'xlsx';
 import { PresencaStatusEnum } from "../model/PresencaStatusEnum";
-import { LayoutPlanilhaEnum } from "../model/LayoutPlannilha";
+import { LayoutPlanilhaEnum } from "../model/LayoutPlannilhaEnum";
+//import fs from "fs"
 
 export class PessoaService {
 
@@ -12,20 +13,17 @@ export class PessoaService {
     let acheiPessoa : Boolean = true;
 
     const cpfSemFormatacao = cpf.replace(/[.-]/g,'').replace('-','.')
-    const filePath = BASE_URL
     
     try {
 
-      const workbook = XLSX.readFile(filePath);
+      const workbook = XLSX.readFile(BASE_URL);
 
       const sheetName = workbook.SheetNames[0];
       const worksheet = workbook.Sheets[sheetName];
 
-      // Encontrar a linha correspondente ao CPF
       const sheetRef = worksheet['!ref'];
       if (sheetRef) {
         const range = XLSX.utils.decode_range(sheetRef);
-
 
         for (let R = range.s.r + 1; R <= range.e.r + 1; ++R) {
           
@@ -36,9 +34,7 @@ export class PessoaService {
           if (cpfSemFormatacaoEXCEL == cpfSemFormatacao) {
             
             pessoa = preenchePessoa(worksheet, R) ;
-            //console.info('Achei Pessoa',pessoa)
 
-            // Se o CPF for encontrado, preencher a coluna 'status' com 'OK'
             worksheet[`${LayoutPlanilhaEnum.STATUS_COLUNA}${R}`] = { t: 's', v: PresencaStatusEnum.COMPARECEU };
             worksheet[`${LayoutPlanilhaEnum.DATA_REGISTRO_COLUNA}${R}`] = { t: 's', v: dataHoraConsulta };
 
@@ -47,7 +43,7 @@ export class PessoaService {
           } else {acheiPessoa = false}
         }
 
-        XLSX.writeFile(workbook, filePath);
+        XLSX.writeFile(workbook, BASE_URL);
       } else {
         console.error('A referência da planilha ("!ref") não foi encontrada no arquivo Excel.');
       }
@@ -105,5 +101,60 @@ export class PessoaService {
 
       return `${dia}/${mes}/${ano} ${hora}:${minutos}:${segundos}`;
     }
+  }
+
+  static async cadastrar(pessoa:Pessoa) : Promise<string> {
+    const pessoaNew : Pessoa = pessoa;
+    try {
+
+      const workbook = XLSX.readFile(BASE_URL);
+
+      const sheetName = workbook.SheetNames[0];
+      const worksheet = workbook.Sheets[sheetName];
+      const sheetRef = worksheet['!ref'];
+      if (sheetRef) {
+        const lastRow = sheetRef.split(':')[1].replace(/[A-Za-z]/g, '');
+        const newRow = Number(lastRow) +1;
+
+        console.log('${LayoutPlanilhaEnum.IGREJA_COLUNA}${newRow}',`${LayoutPlanilhaEnum.IGREJA_COLUNA}${newRow}`)
+
+        worksheet[`${LayoutPlanilhaEnum.IGREJA_COLUNA}${newRow}`] = { t: 's', v: pessoaNew.igreja};
+        worksheet[`${LayoutPlanilhaEnum.CARGO_COLUNA}${newRow}`] = { t: 's', v: pessoaNew.cargo };
+        worksheet[`${LayoutPlanilhaEnum.NOME_COLUNA}${newRow}`] = { t: 's', v: pessoaNew.nome };
+        worksheet[`${LayoutPlanilhaEnum.CPF_COLUNA}${newRow}`] = { t: 's', v: pessoaNew.cpf };
+        worksheet[`${LayoutPlanilhaEnum.DATA_NASCIMENTO_COLUNA}${newRow}`] = { t: 's', v: pessoaNew.dataNascimento };
+        worksheet[`${LayoutPlanilhaEnum.STATUS_COLUNA}${newRow}`] = { t: 's', v: PresencaStatusEnum.CADASTR_NOVO };
+        worksheet[`${LayoutPlanilhaEnum.DATA_REGISTRO_COLUNA}${newRow}`] = { t: 's', v: retornaDataConsulta() };
+  
+        // console.log('BASE_URL',BASE_URL)
+        console.log('worksheet',worksheet)
+        //console.log('workbook',workbook)
+        XLSX.writeFile(workbook,BASE_URL);
+
+      } else {
+        console.error('A referência da planilha ("!ref") não foi encontrada no arquivo Excel.');
+      }
+
+      return "Sucesso";
+
+    } catch (error){
+      console.error('Erro ao atualizar o status:', error);
+      throw error;
+    }
+
+    function retornaDataConsulta()
+    {
+      const dataAtual = new Date();
+
+      const dia = String(dataAtual.getDate()).padStart(2, '0');
+      const mes = String(dataAtual.getMonth() + 1).padStart(2, '0'); // O mês é baseado em zero
+      const ano = String(dataAtual.getFullYear());
+      const hora = String(dataAtual.getHours()).padStart(2, '0');
+      const minutos = String(dataAtual.getMinutes()).padStart(2, '0');
+      const segundos = String(dataAtual.getSeconds()).padStart(2, '0');
+
+      return `${dia}/${mes}/${ano} ${hora}:${minutos}:${segundos}`;
+    }
+
   }
 }
