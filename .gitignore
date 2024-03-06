@@ -1,4 +1,6 @@
 lib-cov
+*.xls
+*.xlsx
 *.seed
 *.log
 *.csv

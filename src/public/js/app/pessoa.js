@@ -61,7 +61,7 @@ function showMessage(message, msgType) {
 // }
 
 async function onAdd(){
-  alert('cheguei')
+  //alert('cheguei')
 
   // let pessoa = {}
   // pessoa.igreja = $('#igrejaSelect').val()

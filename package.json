@@ -8,7 +8,8 @@
     "build": "npm run gulp build",
     "start": "npm run build && node dist/app.js",
     "gulp": "gulp",
-    "dev": "set NODE_ENV=development && gulp dev"
+    "dev": "set NODE_ENV=development && gulp dev",
+    "debug": "set NODE_ENV=development && nodemon --inspect ./dist/index.js"
   },
   "keywords": [],
   "author": "",

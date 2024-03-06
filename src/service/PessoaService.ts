@@ -116,8 +116,6 @@ export class PessoaService {
         const lastRow = sheetRef.split(':')[1].replace(/[A-Za-z]/g, '');
         const newRow = Number(lastRow) +1;
 
-        console.log('${LayoutPlanilhaEnum.IGREJA_COLUNA}${newRow}',`${LayoutPlanilhaEnum.IGREJA_COLUNA}${newRow}`)
-
         worksheet[`${LayoutPlanilhaEnum.IGREJA_COLUNA}${newRow}`] = { t: 's', v: pessoaNew.igreja};
         worksheet[`${LayoutPlanilhaEnum.CARGO_COLUNA}${newRow}`] = { t: 's', v: pessoaNew.cargo };
         worksheet[`${LayoutPlanilhaEnum.NOME_COLUNA}${newRow}`] = { t: 's', v: pessoaNew.nome };
@@ -127,7 +125,7 @@ export class PessoaService {
         worksheet[`${LayoutPlanilhaEnum.DATA_REGISTRO_COLUNA}${newRow}`] = { t: 's', v: retornaDataConsulta() };
   
         // console.log('BASE_URL',BASE_URL)
-        console.log('worksheet',worksheet)
+        // console.log('worksheet',worksheet)
         //console.log('workbook',workbook)
         XLSX.writeFile(workbook,BASE_URL);
 
@@ -135,7 +133,7 @@ export class PessoaService {
         console.error('A referência da planilha ("!ref") não foi encontrada no arquivo Excel.');
       }
 
-      return "Sucesso";
+      return 'Sucesso';
 
     } catch (error){
       console.error('Erro ao atualizar o status:', error);
