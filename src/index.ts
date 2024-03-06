@@ -33,6 +33,7 @@ app.use('/js', express.static(path.join(__dirname, 'node_modules/bootstrap/dist/
 app.use('/icons', express.static(path.join(__dirname, 'node_modules/bootstrap-icons/icons')));
 app.use('/fonts', express.static(path.join(__dirname, 'node_modules/bootstrap-icons/font')));
 app.use('/js', express.static(path.join(__dirname, 'node_modules/jquery/dist')));
+app.use('/js', express.static(path.join(__dirname, 'node_modules/inputmask/dist')));
 //rotas views
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');

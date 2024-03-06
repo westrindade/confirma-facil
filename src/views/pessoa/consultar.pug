@@ -7,28 +7,25 @@ block content
     hr
 
     div(class="container home-page")
-      //- section
-        //- div.container
       h2.text-center Confirmar Presença
       div(class="row justify-content-center")
         div(class="col-md-7 col-sm-12")
           div(id="alert-list" class="alert alert-danger d-none" role="alert")
       form
-      div(class="row justify-content-center")
-        div(class="col-md-7 col-sm-12")
-          div(class="row")
-            div(class="col-md-7 col-sm-12")
-              div(class="form-group")
-                label(for="cpf" class="form-label") Consultar por CPF
-                input(id="cpf" type="text" class="form-control" placeholder="Informe o CPF" required)
-            div(class="col-md-4 col-sm-12 d-flex justify-content-md-start justify-content-center")
-              div(class="form-group d-flex")
-                button(id="consult-btn" type="button" class="btn btn-primary align-self-end" onclick="onConsult()") Consultar&nbsp;&nbsp;
-                  span(id="icon-search" class="fa fa-search" aria-hidden="true")
-                  span(id="icon-loading" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true")
-          div(class="row text-center")
-            div(class="col-md-7 col-sm-12")
-              div(class="h-captcha" data-sitekey=`${HCAPTCHA_SITEKEY}`)
-        div(class="col-md-10 col-sm-12 mt-3")
-          div(class="row text-center")
-            //include result-list
+        div(class="row justify-content-center")
+          div(class="col-md-7 col-sm-12")
+            div(class="row")
+              div(class="col-md-7 col-sm-12")
+                div(class="form-group")
+                  label(for="cpf" class="form-label") Consultar por CPF
+                  input(id="cpf" type="text" class="form-control" placeholder="Informe o CPF" required)
+              div(class="col-md-5 col-sm-12 d-flex justify-content-md-start justify-content-center")
+                div(class="form-group d-flex")
+                  button(id="btnConsult" type="button" class="btn btn-dark align-self-end mr-2" onclick="onConfirm()")
+                    span(id="icon-search" class="bi bi-search" aria-hidden="true")
+                    | Confirmar
+                  | &nbsp;
+                  a(id="btnNew" class="btn btn-secondary align-self-end ml-2" href="/pessoa/new")
+                    span(id="icon-plus" class="bi bi-plus" aria-hidden="true")
+                    | Novo
+

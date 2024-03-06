@@ -18,12 +18,12 @@ export class PessoaRoutes extends BaseRoutesConfig  {
       .get((req: express.Request, res: express.Response) => {
         res.render('pessoa/consultar');
       })
-      .post(PessoaController.validate('consultar'), async (req: express.Request, res: express.Response) => {
+      .post(PessoaController.validate('confirmaPresenca'), async (req: express.Request, res: express.Response) => {
         const errors = validationResult(req);
         if (!errors.isEmpty()){
           return res.json({ success: false, hcaptcha: false, errors: errors.array() });
         }
-        return PessoaController.buscarPorCpf(req,res);
+        return PessoaController.confirmaPresenca(req,res);
       })
     ;
 

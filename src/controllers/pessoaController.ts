@@ -2,42 +2,31 @@ import express from 'express';
 import { check } from 'express-validator';
 import { PessoaService } from '../service/PessoaService';
 import { Pessoa } from '../model/Pessoa';
+import { ValidaCpf } from '../infra/validaCpf';
 
 export class PessoaController {
   
   static validate(method: string): any[] {
     switch (method) {
-      case 'consultar': {
+      case 'confirmaPresenca': {
         return [
           check('cpf', 'Cpf é obrigatório.').notEmpty(),
           check('cpf')
             .optional({ checkFalsy: true })
             .custom(async (value, { req }) => {
-              const cpfRegex = /^\d{3}\.\d{3}\.\d{3}-\d{2}$/;
-              const cpf = value//.replace(/\D/g, '');
-              if (!cpfRegex.test(cpf)) {
-                console.error(`[Pessoa] Cpf ${cpf} com formato inválido.`);
-                throw new Error('Cpf com formato inválido.');
-              }
-              return true;
+              return ValidaCpf.validate(value)
             })
         ];
       }
       case 'cadastrar': {
         return [
-          check('nome', 'Nome é obrigatório.').notEmpty(),
-          check('cpf', 'Cpf é obrigatório.').notEmpty(),
-          check('dataNascimento', 'Data de Nascimento é obrigatório.').notEmpty(),
-          check('cpf')
+          check('pessoa.nome', 'Nome é obrigatório.').notEmpty(),
+          check('pessoa.cpf', 'Cpf é obrigatório.').notEmpty(),
+          check('pessoa.dataNascimento', 'Data de Nascimento não é valida. Precisa ser inferior a 10 anos').notEmpty(),
+          check('pessoa.cpf')
             .optional({ checkFalsy: true })
             .custom(async (value, { req }) => {
-              const cpfRegex = /^\d{3}\.\d{3}\.\d{3}-\d{2}$/;
-              const cpf = value//.replace(/\D/g, '');
-              if (!cpfRegex.test(cpf)) {
-                console.error(`[Pessoa] Cpf ${cpf} com formato inválido.`);
-                throw new Error('Cpf com formato inválido.');
-              }
-              return true;
+              return ValidaCpf.validate(value)
             })
         ];
       }
@@ -46,10 +35,10 @@ export class PessoaController {
     }
   }
 
-  static async buscarPorCpf(req: express.Request, res: express.Response) {
+  static async confirmaPresenca(req: express.Request, res: express.Response) {
     const cpf = req.body.cpf//.replace(/\D/g, '');
     try{
-      const result = await PessoaService.buscarPorCpf(cpf);
+      const result = await PessoaService.confirmaPresenca(cpf);
       return res.json({ success: true, result: result });
     } catch (error:any) {
       const errorOnConsult = [{ msg: error.message }];
@@ -59,7 +48,7 @@ export class PessoaController {
   }
 
   static async cadastrar(req: express.Request, res: express.Response) {
-    const pessoa : Pessoa = req.body
+    const pessoa : Pessoa = req.body.pessoa
     try{
       const result = await PessoaService.cadastrar(pessoa);
       return res.json({ success: true, result: result });

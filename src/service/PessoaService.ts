@@ -1,13 +1,13 @@
 import { Pessoa } from "../model/Pessoa";
-import { BASE_URL } from "../infra/config";
+import { FILE_NAME_BASE } from "../infra/config";
 import * as XLSX from 'xlsx';
 import { PresencaStatusEnum } from "../model/PresencaStatusEnum";
 import { LayoutPlanilhaEnum } from "../model/LayoutPlannilhaEnum";
-//import fs from "fs"
+import fs from "fs"
 
 export class PessoaService {
 
-  static async buscarPorCpf(cpf:string) : Promise<Pessoa> {
+  static async confirmaPresenca(cpf:string) : Promise<Pessoa> {
     const dataHoraConsulta = retornaDataConsulta()
     let pessoa : Pessoa = buildPessoa();
     let acheiPessoa : Boolean = true;
@@ -16,7 +16,7 @@ export class PessoaService {
     
     try {
 
-      const workbook = XLSX.readFile(BASE_URL);
+      const workbook = XLSX.readFile(FILE_NAME_BASE);
 
       const sheetName = workbook.SheetNames[0];
       const worksheet = workbook.Sheets[sheetName];
@@ -43,7 +43,7 @@ export class PessoaService {
           } else {acheiPessoa = false}
         }
 
-        XLSX.writeFile(workbook, BASE_URL);
+        XLSX.writeFile(workbook, FILE_NAME_BASE);
       } else {
         console.error('A referência da planilha ("!ref") não foi encontrada no arquivo Excel.');
       }
@@ -104,36 +104,54 @@ export class PessoaService {
   }
 
   static async cadastrar(pessoa:Pessoa) : Promise<string> {
-    const pessoaNew : Pessoa = pessoa;
     try {
 
-      const workbook = XLSX.readFile(BASE_URL);
+      let retorno : any = {id: 1, mensagem: ''};
 
+      const workbook = XLSX.readFile(FILE_NAME_BASE);
       const sheetName = workbook.SheetNames[0];
       const worksheet = workbook.Sheets[sheetName];
       const sheetRef = worksheet['!ref'];
       if (sheetRef) {
-        const lastRow = sheetRef.split(':')[1].replace(/[A-Za-z]/g, '');
-        const newRow = Number(lastRow) +1;
+        const range = XLSX.utils.decode_range(sheetRef);
 
-        worksheet[`${LayoutPlanilhaEnum.IGREJA_COLUNA}${newRow}`] = { t: 's', v: pessoaNew.igreja};
-        worksheet[`${LayoutPlanilhaEnum.CARGO_COLUNA}${newRow}`] = { t: 's', v: pessoaNew.cargo };
-        worksheet[`${LayoutPlanilhaEnum.NOME_COLUNA}${newRow}`] = { t: 's', v: pessoaNew.nome };
-        worksheet[`${LayoutPlanilhaEnum.CPF_COLUNA}${newRow}`] = { t: 's', v: pessoaNew.cpf };
-        worksheet[`${LayoutPlanilhaEnum.DATA_NASCIMENTO_COLUNA}${newRow}`] = { t: 's', v: pessoaNew.dataNascimento };
-        worksheet[`${LayoutPlanilhaEnum.STATUS_COLUNA}${newRow}`] = { t: 's', v: PresencaStatusEnum.CADASTR_NOVO };
-        worksheet[`${LayoutPlanilhaEnum.DATA_REGISTRO_COLUNA}${newRow}`] = { t: 's', v: retornaDataConsulta() };
-  
-        // console.log('BASE_URL',BASE_URL)
-        // console.log('worksheet',worksheet)
-        //console.log('workbook',workbook)
-        XLSX.writeFile(workbook,BASE_URL);
+        for (let R = range.s.r + 1; R <= range.e.r + 1; ++R) {
+          
+          const row = R;
+          const cpfCelula = worksheet[`${ LayoutPlanilhaEnum.CPF_COLUNA }${row}`];
+          const cpfSemFormatacaoEXCEL : string | null = cpfCelula ? String(cpfCelula.v).replace(/[.-]/g,'') : null;
 
+          const cpfSemFormatacao = pessoa.cpf.replace(/[.-]/g,'').replace('-','.')
+
+          if (!cpfCelula) {
+            const newRow = Number(row);
+
+            worksheet[`${LayoutPlanilhaEnum.IGREJA_COLUNA}${newRow}`] = { t: 's', v: pessoa.igreja};
+            worksheet[`${LayoutPlanilhaEnum.CARGO_COLUNA}${newRow}`] = { t: 's', v: pessoa.cargo };
+            worksheet[`${LayoutPlanilhaEnum.NOME_COLUNA}${newRow}`] = { t: 's', v: pessoa.nome };
+            worksheet[`${LayoutPlanilhaEnum.CPF_COLUNA}${newRow}`] = { t: 's', v: pessoa.cpf };
+            worksheet[`${LayoutPlanilhaEnum.DATA_NASCIMENTO_COLUNA}${newRow}`] = { t: 's', v: pessoa.dataNascimento };
+            worksheet[`${LayoutPlanilhaEnum.STATUS_COLUNA}${newRow}`] = { t: 's', v: PresencaStatusEnum.CADASTR_NOVO };
+            worksheet[`${LayoutPlanilhaEnum.DATA_REGISTRO_COLUNA}${newRow}`] = { t: 's', v: retornaDataConsulta() };
+
+            retorno.id = 1
+            retorno.mensagem = `CPF ${pessoa.cpf} cadastrado com sucesso`
+            break;
+          } else if (cpfSemFormatacaoEXCEL == cpfSemFormatacao) {
+            retorno.id = 2
+            retorno.mensagem = `CPF ${pessoa.cpf} já existe`
+          }
+        }
+        XLSX.writeFile(workbook,FILE_NAME_BASE);
       } else {
         console.error('A referência da planilha ("!ref") não foi encontrada no arquivo Excel.');
       }
 
-      return 'Sucesso';
+      if (retorno.id == 2){
+        console.error(retorno.mensagem)
+        throw new Error(retorno.mensagem)
+      }
+      return retorno.mensagem;
 
     } catch (error){
       console.error('Erro ao atualizar o status:', error);
