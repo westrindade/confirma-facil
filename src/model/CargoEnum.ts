@@ -1,0 +1,8 @@
+export enum CargoEnum {
+  PASTOR = 'PASTOR',
+  PRESBITERO = 'PRESBITERO',
+  DIACONO = 'DIACONO',
+  DIACONISA = 'DIACONISA',
+  LIDER = 'LIDER',
+  MEMBRO = 'MEMBRO'
+}
