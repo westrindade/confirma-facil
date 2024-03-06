@@ -1,6 +1,4 @@
 lib-cov
-*.xls
-*.xlsx
 *.seed
 *.log
 *.csv
@@ -37,6 +35,10 @@ bower_components
 # Editors
 .idea
 *.iml
+
+# excel 
+*.xls
+*.xlsx
 
 # OS metadata
 .DS_Store
