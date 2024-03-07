@@ -1,13 +1,12 @@
 version: '3'
 services:
-  nodejs: 
-    build: ./
-    image: wesmax/web-confirma-facil
-    container_name: web
-  nginx: 
-    build: ./nginx
-    image: nginx
-    container_name: nginx
+  web-confirma-facil:
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
-      - 4200:4200
+      - "4200:4200"  # Ajuste conforme necessário
+    volumes:
+      - C:\Users\wtrindade\Downloads\web_consultar_excel\data\:/usr/src/app/data
+
 #docker-compose up

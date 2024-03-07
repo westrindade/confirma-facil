@@ -19,10 +19,13 @@ COPY . .
 RUN npm install
 RUN npm run build:prod
 
+#RUN NODE_ENV=production npm run build:prod
+
 #/usr/src/app/data
 
 # Expose the listening port
 EXPOSE 4200
 
 # Launch app with PM2
-CMD [ "pm2-runtime", "start", "npm", "--", "start" ]
+#CMD [ "pm2-runtime", "start", "npm", "--", "start" ]
+CMD ["pm2-runtime", "start", "ecosystem.config.js"]
