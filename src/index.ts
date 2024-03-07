@@ -44,7 +44,6 @@ routes.push(new CargoRoutes(app))
 routes.push(new IgrejaRoutes(app))
 
 //arquivo config
-console.log('.env',`.env.${process.env.NODE_ENV}`)
 const envPath = path.join(__dirname, `.env.${process.env.NODE_ENV}`);
 dotenv.config({ path: envPath, debug: true, override: true });
 //const port = 3000;
