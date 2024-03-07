@@ -20,6 +20,3 @@ O Confirma Fácil é um sistema online para confirmação de presença. Desenvol
 1. Instale as dependências: `npm install`
 3. Inicie o servidor: `npm run dev`
 4. Acesse o sistema em [http://localhost:4200](http://localhost:4200)
-
-## Docker
-docker build -t nome_da_sua_imagem:tag .

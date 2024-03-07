@@ -1,16 +1,28 @@
-# Use a imagem oficial do Node.js
-FROM node:20
+FROM node:20-alpine as node-build
 
-# Crie e defina o diretório de trabalho
 WORKDIR /usr/src/app
 
-# Copie os arquivos necessários para o contêiner
-COPY dist/ ./
-COPY package*.json ./
-COPY data/bd_excel.xlsx ./
+# Install PM2 globally
+RUN npm install --global pm2
 
-# Instale as dependências
-RUN npm install --only=production
+# Credential for real time monitoring PM2 Plus
+# ENV PM2_PUBLIC_KEY xxxxx
+# ENV PM2_SECRET_KEY xxxxx
 
-# Comando para iniciar a aplicação
-CMD ["node", "dist/seu-arquivo-compilado.js"]
+
+# Copy "package.json" and "package-lock.json" before other files
+# Utilise Docker cache to save re-installing dependencies if unchanged
+
+COPY . .
+
+# Install dependencies
+RUN npm install
+RUN npm run build
+
+#/usr/src/app/data
+
+# Expose the listening port
+EXPOSE 4200
+
+# Launch app with PM2
+CMD [ "pm2-runtime", "start", "npm", "--", "start" ]

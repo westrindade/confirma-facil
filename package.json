@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "npm run gulp build",
-    "start": "npm run build && node dist/app.js",
+    "build": "set NODE_ENV=development && npm run gulp build",
+    "start": "NODE_ENV=production node ./dist/index.js",
     "gulp": "gulp",
     "dev": "set NODE_ENV=development && gulp dev",
     "debug": "set NODE_ENV=development && nodemon --inspect ./src/index.ts"

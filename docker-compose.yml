@@ -1,0 +1,13 @@
+version: '3'
+services:
+  nodejs: 
+    build: ./
+    image: wesmax/web-confirma-facil
+    container_name: web
+  nginx: 
+    build: ./nginx
+    image: nginx
+    container_name: nginx
+    ports:
+      - 4200:4200
+#docker-compose up
