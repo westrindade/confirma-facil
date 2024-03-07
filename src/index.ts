@@ -44,13 +44,14 @@ routes.push(new CargoRoutes(app))
 routes.push(new IgrejaRoutes(app))
 
 //arquivo config
-const envPath = path.join(__dirname, `.env.development`);
+console.log('.env',`.env.${process.env.NODE_ENV}`)
+const envPath = path.join(__dirname, `.env.${process.env.NODE_ENV}`);
 dotenv.config({ path: envPath, debug: true, override: true });
 //const port = 3000;
 if (!process.env.PORT || !process.env.NODE_ENV) {
   process.exit(1);
 }
-const port:number = parseInt(process.env.PORT as string, 10);;
+const port:number = parseInt(process.env.PORT as string, 10);
 
 /////
 app.get('/', (req, res) => {
