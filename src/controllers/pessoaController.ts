@@ -22,7 +22,7 @@ export class PessoaController {
         return [
           check('pessoa.nome', 'Nome é obrigatório.').notEmpty(),
           check('pessoa.cpf', 'Cpf é obrigatório.').notEmpty(),
-          check('pessoa.dataNascimento', 'Data de Nascimento não é valida. Precisa ser inferior a 10 anos').notEmpty(),
+          check('pessoa.dataNascimento', 'Data de Nascimento não é valida. Precisa ser superior a 10 anos').notEmpty(),
           check('pessoa.cpf')
             .optional({ checkFalsy: true })
             .custom(async (value, { req }) => {
