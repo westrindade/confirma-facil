@@ -93,7 +93,7 @@ async function onSendJustificativa(){
       if (showNew)
         enableNew()
     } else {
-      showMessage('Justificativa salva com sucesso!','success')
+      showMessage('Justificativa enviada com sucesso!','success')
     }
     
   } catch (error) {
