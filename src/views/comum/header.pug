@@ -1,0 +1,25 @@
+//- nav.navbar.navbar-expand-lg.navbar-dark.bg-dark
+//-   div.container-fluid
+//-     a.navbar-brand(href="/" style="font-size: 1.8rem; display: flex; align-items: center;") 
+//-       span.bi.text-secondary.bi-check-circle(style="margin-right: 5px;") 
+//-       | Confirma Fácil
+//-     div.logo-container(class="ms-auto")
+//-       img.logo(src="/images/logotipo.png", alt="Logo da Empresa", width="50")
+
+nav.navbar.navbar-expand-lg.navbar-dark.bg-dark
+  div.container-fluid(style="display: flex; justify-content: flex-end;")
+    a.navbar-brand(href="/" style="font-size: 1.8rem; display: flex; align-items: center;") 
+      span.bi.text-secondary.bi-check-circle(style="margin-right: 5px;") 
+      | Confirma Fácil
+    ul.navbar-nav
+      li.nav-item
+        a.nav-link(href="/relatorio/total" style="font-size: 1rem; color: #fff; text-decoration: none; margin-left: 15px;") 
+          span.bi.text-secondary.bi-file-bar-graph(style="margin-right: 5px; font-size: 0.8rem;")
+          | Relatório Total
+    button.navbar-toggler(type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation")
+      span.navbar-toggler-icon
+    div#navbarNav.collapse.navbar-collapse
+    div.logo-container(class="ms-auto")
+      img.logo(src="../images/logotipo.png", alt="Logo da Empresa", width="50")
+
+

@@ -8,6 +8,7 @@ import { BaseRoutesConfig } from './routes/base.routes.config';
 import { PessoaRoutes } from './routes/pessoa.routes';
 import { CargoRoutes } from './routes/cargo.routes';
 import { IgrejaRoutes } from './routes/igreja.routes';
+import { RelatorioRoutes } from './routes/relatorio.routes';
 
 //dotenv.config({ path: path.join(__dirname, `.env.${process.env.NODE_ENV}`), debug: true, override: true });
 dotenv.config({ path: path.join(__dirname, `.env.${process.env.NODE_ENV}`), encoding: 'utf8', debug: true, override: true });
@@ -39,9 +40,10 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
 //rotas post
-routes.push(new PessoaRoutes(app));
+routes.push(new PessoaRoutes(app))
 routes.push(new CargoRoutes(app))
 routes.push(new IgrejaRoutes(app))
+routes.push(new RelatorioRoutes(app))
 
 //arquivo config
 const envPath = path.join(__dirname, `.env.${process.env.NODE_ENV}`);

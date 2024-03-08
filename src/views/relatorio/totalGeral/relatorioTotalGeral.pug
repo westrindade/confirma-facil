@@ -1,0 +1,38 @@
+extends ../../comum/layout
+
+block content
+  body.bg-light.text-dark
+
+    include ../../comum/header
+    hr
+
+    div(class="container home-page text-center")
+      h2 Totais
+      div(class="row justify-content-center")
+        div(class="col-md-7 col-sm-12")
+          div(id="alert-list" class="alert alert-danger d-none" role="alert")
+      form(id="frmRelTotal")
+        div(class="row justify-content-center")
+          div(class="col-md-12 col-sm-12")
+            div(class="row d-flex justify-content-center") 
+              div(class="col-md-12 col-sm-12 justify-content-center") 
+                a(type="button" class="btn btn-dark btn-block m-3" style="height: 100px; width: 140px; font-size: 24px;" onClick="loadGrid('total','dark')")
+                  div(style="font-size: 36px;") 
+                    label(id="lblTotal") 0
+                  div(style="font-size: 15px;") Total
+                a(type="button" class="btn btn-success btn-block m-3" style="height: 100px; width: 140px; font-size: 24px;" onClick="loadGrid('presentes','success')")
+                  div(style="font-size: 36px;")
+                    label(id="lblPresentes") 0
+                  div(style="font-size: 15px;") Presentes
+                a(type="button" class="btn btn-warning btn-block m-3" style="height: 100px; width: 140px; font-size: 24px;" onClick="loadGrid('justificativa','warning')")
+                  div(style="font-size: 36px;") 
+                    label(id="lblJustificados") 0
+                  div(style="font-size: 15px;") Justificados
+                a(type="button" class="btn btn-outline-danger btn-block m-3" style="height: 100px; width: 140px; font-size: 24px;" onClick="loadGrid('ausente','danger')")
+                  div(style="font-size: 36px;") 
+                    label(id="lblAusentes") 0
+                  div(style="font-size: 15px;") Ausentes
+
+              div(class="col-md-10 col-sm-12 mt-3 text-center")
+                div(class="row text-center")
+                  include lista-resultado

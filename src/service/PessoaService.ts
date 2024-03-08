@@ -35,7 +35,7 @@ export class PessoaService {
             
             pessoa = preenchePessoa(worksheet, R) ;
 
-            worksheet[`${LayoutPlanilhaEnum.STATUS_COLUNA}${R}`] = { t: 's', v: PresencaStatusEnum.COMPARECEU };
+            worksheet[`${LayoutPlanilhaEnum.STATUS_COLUNA}${R}`] = { t: 's', v: PresencaStatusEnum.PRESENTE };
             worksheet[`${LayoutPlanilhaEnum.DATA_REGISTRO_COLUNA}${R}`] = { t: 's', v: dataHoraConsulta };
 
             acheiPessoa = true
@@ -61,7 +61,7 @@ export class PessoaService {
 
     function buildPessoa(){
       return {
-        igreja: '',cargo: '',nome: '',cpf: '',dataNascimento: '',status: PresencaStatusEnum.COMPARECEU
+        igreja: '',cargo: '',nome: '',cpf: '',dataNascimento: '',status: PresencaStatusEnum.PRESENTE
       };
     }
 
@@ -131,7 +131,7 @@ export class PessoaService {
             worksheet[`${LayoutPlanilhaEnum.NOME_COLUNA}${newRow}`] = { t: 's', v: pessoa.nome };
             worksheet[`${LayoutPlanilhaEnum.CPF_COLUNA}${newRow}`] = { t: 's', v: pessoa.cpf };
             worksheet[`${LayoutPlanilhaEnum.DATA_NASCIMENTO_COLUNA}${newRow}`] = { t: 's', v: pessoa.dataNascimento };
-            worksheet[`${LayoutPlanilhaEnum.STATUS_COLUNA}${newRow}`] = { t: 's', v: PresencaStatusEnum.CADASTR_NOVO };
+            worksheet[`${LayoutPlanilhaEnum.STATUS_COLUNA}${newRow}`] = { t: 's', v: PresencaStatusEnum.CADASTRO_NOVO };
             worksheet[`${LayoutPlanilhaEnum.DATA_REGISTRO_COLUNA}${newRow}`] = { t: 's', v: retornaDataConsulta() };
 
             retorno.id = 1
@@ -171,6 +171,37 @@ export class PessoaService {
 
       return `${dia}/${mes}/${ano} ${hora}:${minutos}:${segundos}`;
     }
+
+  }
+
+  static async listar() : Promise<any> {
+    var jsonArrayComIgreja;
+
+    try {
+
+      const workbook = XLSX.readFile(FILE_NAME_BASE);
+
+      const sheetName = workbook.SheetNames[0];
+      const worksheet = workbook.Sheets[sheetName];
+
+      const sheetRef = worksheet['!ref'];
+      if (sheetRef) {
+        
+        const jsonData : Pessoa[] = XLSX.utils.sheet_to_json(worksheet);
+
+        jsonArrayComIgreja = jsonData.filter((obj: Pessoa) => {
+          return obj.hasOwnProperty('igreja');
+        });
+
+      } else {
+        console.error('A referência da planilha ("!ref") não foi encontrada no arquivo Excel.');
+      }
+
+    } catch (error){
+      console.error('Erro ao atualizar o status:', error);
+      throw error;
+    }
+    return jsonArrayComIgreja;
 
   }
 }

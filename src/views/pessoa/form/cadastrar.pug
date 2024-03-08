@@ -1,9 +1,9 @@
-extends ../../layout
+extends ../../comum/layout
 
 block content
   body.bg-light.text-dark
 
-    include ../../header
+    include ../../comum/header
     hr
 
     section
@@ -12,7 +12,7 @@ block content
         div(class="row justify-content-center")
           div(class="col-md-7 col-sm-12")
             div(id="alert-list" class="alert alert-danger d-none" role="alert")
-        form(action='/pessoa/new' method='POST' onsubmit='onAdd()')
+        form(id="frmPessoa" action='/pessoa/new' method='POST' onsubmit='onAdd()')
           div.row.g-3
             div.col-md-6
               div.mb-3
