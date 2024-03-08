@@ -35,3 +35,18 @@ function formatDataNascimento(date){
   }
   return null
 }
+
+function showMessage(message, msgType) {
+
+  const alertList = $('#alert-list');
+  alertList.html('')
+  alertList.removeClass().addClass('alert alert-' + msgType);;
+
+  let icon = '';
+  if (msgType == 'danger'){
+    icon = 'bi-x-square-fill'
+  } else {
+    icon = 'bi-check-square-fill'
+  }
+  alertList.append('<span class="bi '+ icon +'" style="font-size: 1.4em;"></span> <span>' + message + '</span><br>');
+}

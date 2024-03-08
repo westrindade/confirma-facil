@@ -46,11 +46,11 @@ block content
                 input#dataNascimento.form-control.form-control-sm(type="date", name="dataNascimento", required)
           div.d-grid.gap-2
             button(id="btnCadastrar" type="button" class="btn btn-dark" onclick="onAdd()")
-              span(id="icon-save" class="bi bi-save" aria-hidden="true")
-              | Cadastrar&nbsp;&nbsp;
-            a(id="btnCancelar" type="button" class="btn btn-danger" href="/pessoa/consultar") 
+              span(id="icon-save" class="bi bi-person-fill-add" aria-hidden="true")
+              | &nbsp;Cadastrar&nbsp;&nbsp;
+            a(id="btnCancelar" type="button" class="btn btn-danger" href="/pessoa/confirmar") 
               span(id="icon-counterclockwise" class="bi bi-arrow-counterclockwise" aria-hidden="true")
-              |Voltar&nbsp;&nbsp;
+              | &nbsp;Voltar&nbsp;&nbsp;
             a(id="btnLimpar" type="button" class="btn btn-outline-danger" href="/pessoa/new") 
               span(id="icon-eraser" class="bi bi-eraser" aria-hidden="true")
-              | Limpar&nbsp;&nbsp;
+              | &nbsp;Limpar&nbsp;&nbsp;

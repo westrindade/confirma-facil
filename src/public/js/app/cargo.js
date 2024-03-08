@@ -1,4 +1,16 @@
 'use strict';
+
+$(function () {
+  
+  var formularioId = $('#frmPessoa').attr('id');
+  if(formularioId){
+    loadCargos()
+  }
+
+});
+
+
+'use strict';
 async function loadCargos() {
   
   try {
@@ -20,5 +32,3 @@ async function loadCargos() {
     console.error('Erro na solicitação:', error);
   }
 };
-
-document.addEventListener('DOMContentLoaded', loadCargos);

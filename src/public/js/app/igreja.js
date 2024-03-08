@@ -1,4 +1,14 @@
 'use strict';
+
+$(function () {
+  
+  var formularioId = $('#frmPessoa').attr('id');
+  if(formularioId){
+    loadIgrejas()
+  }
+
+});
+
 async function loadIgrejas() {
   
   try {
@@ -20,5 +30,3 @@ async function loadIgrejas() {
     console.error('Erro na solicitação:', error);
   }
 };
-
-document.addEventListener('DOMContentLoaded', loadIgrejas);

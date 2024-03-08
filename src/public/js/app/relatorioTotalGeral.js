@@ -22,11 +22,6 @@ async function onLoad(){
 
       dadosGrid = data.result
 
-      console.log('data.result.total.total',data.result.total.total)
-      console.log('data.result.presente.total',data.result.presente.total)
-      console.log('data.result.justificativa.total',data.result.justificativa.total)
-      console.log('data.result.ausente.total',data.result.ausente.total)
-
       $("#lblTotal").text(data.result.total.total);
       $("#lblPresentes").text(data.result.presente.total);
       $("#lblJustificados").text(data.result.justificativa.total);
@@ -45,16 +40,16 @@ async function loadGrid(event,classColor){
   switch(event){
     case 'justificativa':
       dados = dadosGrid.justificativa.list
-    break
+      break
     case 'presentes':
       dados = dadosGrid.presente.list
-    break
+      break
     case 'ausente':
       dados = dadosGrid.ausente.list
-    break
+      break
     case 'total':
       dados = dadosGrid.total.list
-    break
+      break
   }
 
   clearGrid();

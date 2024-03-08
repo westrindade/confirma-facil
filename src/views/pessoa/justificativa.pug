@@ -1,0 +1,45 @@
+extends ../comum/layout
+
+block content
+  body.bg-light.text-dark
+
+    include ../comum/header
+    hr
+
+    section
+      div.container
+        h2.text-center Justificar não Comparecimento
+        div(class="row justify-content-center")
+          div(class="col-md-7 col-sm-12")
+            div(id="alert-list" class="alert alert-danger d-none" role="alert")
+        form(id="frmJustificativa" action='/pessoa/new' method='POST' onsubmit='onAdd()')
+          div.row.g-3
+            div.col-md-6
+              div.mb-3
+                label.form-label(for="igrejaSelect") Igreja
+                div.input-group
+                  select#igrejaSelect.form-control.form-control-sm(name="igreja", style="width: 200px;", required)
+                  button.btn.btn-outline-secondary(type="button", data-bs-toggle="tooltip", data-bs-placement="top", title="Escolher Cargo") 
+                    span.bi.bi-chevron-down
+            div.col-md-6
+              div.mb-3
+                label.form-label(for="cargoSelect") Pessoa
+                div.input-group
+                  select#pessoaSelect.form-control.form-control-sm(name="pessoa", style="width: 200px;", required)
+                  button.btn.btn-outline-secondary(type="button", data-bs-toggle="tooltip", data-bs-placement="top", title="Escolher Cargo") 
+                    span.bi.bi-chevron-down
+          div.row.g-3
+            div.col-md-12
+              div.mb-3
+                label.form-label(for="justificativa") Informar justificativa
+                input#justificativa.form-control.form-control-sm(type="text", name="justificativa", placeholder="Informe a justificativa", required)
+          div.d-grid.gap-2
+            button(id="btnCadastrar" type="button" class="btn btn-dark" onclick="onSendJustificativa()")
+              span(id="icon-save" class="bi-send-plus-fill" aria-hidden="true")
+              | &nbsp;Enviar&nbsp;&nbsp;
+            a(id="btnCancelar" type="button" class="btn btn-danger" href="/pessoa/confirmar") 
+              span(id="icon-counterclockwise" class="bi bi-arrow-counterclockwise" aria-hidden="true")
+              | &nbsp;Voltar&nbsp;&nbsp;
+            a(id="btnLimpar" type="button" class="btn btn-outline-danger" href="/pessoa/justificativa") 
+              span(id="icon-eraser" class="bi bi-eraser" aria-hidden="true")
+              | &nbsp;Limpar&nbsp;&nbsp;

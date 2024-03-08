@@ -6,5 +6,6 @@ export enum LayoutPlanilhaEnum {
   CPF_COLUNA = 'E',
   DATA_NASCIMENTO_COLUNA = 'F',
   STATUS_COLUNA = 'G',
-  DATA_REGISTRO_COLUNA = 'H'
+  DATA_REGISTRO_COLUNA = 'H',
+  JUSTIFICATIVA = 'I'
 }

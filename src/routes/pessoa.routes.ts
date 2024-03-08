@@ -14,9 +14,9 @@ export class PessoaRoutes extends BaseRoutesConfig  {
 
     console.info(`[pessoa.routes]`);
 
-    this.app.route('/pessoa/consultar')
+    this.app.route('/pessoa/confirmar')
       .get((req: express.Request, res: express.Response) => {
-        res.render('pessoa/consultar');
+        res.render('pessoa/confirmar-presenca');
       })
       .post(PessoaController.validate('confirmaPresenca'), async (req: express.Request, res: express.Response) => {
         const errors = validationResult(req);
@@ -37,6 +37,25 @@ export class PessoaRoutes extends BaseRoutesConfig  {
           return res.json({ success: false, hcaptcha: false, errors: errors.array() });
         }
         return PessoaController.cadastrar(req,res);
+      })
+    ;
+
+    this.app.route('/pessoa/listar')
+      .get((req: express.Request, res: express.Response) => {
+        return PessoaController.listar(req,res);
+      })
+    ;
+
+    this.app.route('/pessoa/justificativa')
+      .get((req: express.Request, res: express.Response) => {
+        res.render('pessoa/justificativa');
+      })
+      .post(PessoaController.validate('justificativa'), async (req: express.Request, res: express.Response) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()){
+          return res.json({ success: false, hcaptcha: false, errors: errors.array() });
+        }
+        return PessoaController.informarJustificativa(req,res);
       })
     ;
 

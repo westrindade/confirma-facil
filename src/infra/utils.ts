@@ -1,6 +1,19 @@
-export class ValidaCpf {
+export class Utils {
+  
+  static obterDataConsulta() {
+    const date = new Date();
 
-  static validate(value: string): boolean {
+    const dia = String(date.getDate()).padStart(2, '0');
+    const mes = String(date.getMonth() + 1).padStart(2, '0'); // O mês é baseado em zero
+    const ano = String(date.getFullYear());
+    const hora = String(date.getHours()).padStart(2, '0');
+    const minutos = String(date.getMinutes()).padStart(2, '0');
+    const segundos = String(date.getSeconds()).padStart(2, '0');
+
+    return `${dia}/${mes}/${ano} ${hora}:${minutos}:${segundos}`;
+  }
+
+  static validarCpf(value: string): boolean {
     const cpf = value.replace(/[^\d]+/g,''); 
 
     if (cpf.length !== 11 || /^(\d)\1+$/.test(cpf)) {
@@ -32,5 +45,4 @@ export class ValidaCpf {
     }
     return true;
   }
-
 }

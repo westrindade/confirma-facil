@@ -3,12 +3,13 @@ import { FILE_NAME_BASE } from "../infra/config";
 import * as XLSX from 'xlsx';
 import { PresencaStatusEnum } from "../model/PresencaStatusEnum";
 import { LayoutPlanilhaEnum } from "../model/LayoutPlannilhaEnum";
-import fs from "fs"
+import { Utils } from "../infra/utils";
+import { configDotenv } from "dotenv";
 
 export class PessoaService {
 
   static async confirmaPresenca(cpf:string) : Promise<Pessoa> {
-    const dataHoraConsulta = retornaDataConsulta()
+    const dataHoraConsulta = Utils.obterDataConsulta()
     let pessoa : Pessoa = buildPessoa();
     let acheiPessoa : Boolean = true;
 
@@ -64,7 +65,6 @@ export class PessoaService {
         igreja: '',cargo: '',nome: '',cpf: '',dataNascimento: '',status: PresencaStatusEnum.PRESENTE
       };
     }
-
     function preenchePessoa(data:any, i: Number){
 
       let pessoaReturn : Pessoa = buildPessoa();
@@ -88,19 +88,6 @@ export class PessoaService {
       return pessoaReturn;
     }
 
-    function retornaDataConsulta()
-    {
-      const dataAtual = new Date();
-
-      const dia = String(dataAtual.getDate()).padStart(2, '0');
-      const mes = String(dataAtual.getMonth() + 1).padStart(2, '0'); // O mês é baseado em zero
-      const ano = String(dataAtual.getFullYear());
-      const hora = String(dataAtual.getHours()).padStart(2, '0');
-      const minutos = String(dataAtual.getMinutes()).padStart(2, '0');
-      const segundos = String(dataAtual.getSeconds()).padStart(2, '0');
-
-      return `${dia}/${mes}/${ano} ${hora}:${minutos}:${segundos}`;
-    }
   }
 
   static async cadastrar(pessoa:Pessoa) : Promise<string> {
@@ -132,7 +119,7 @@ export class PessoaService {
             worksheet[`${LayoutPlanilhaEnum.CPF_COLUNA}${newRow}`] = { t: 's', v: pessoa.cpf };
             worksheet[`${LayoutPlanilhaEnum.DATA_NASCIMENTO_COLUNA}${newRow}`] = { t: 's', v: pessoa.dataNascimento };
             worksheet[`${LayoutPlanilhaEnum.STATUS_COLUNA}${newRow}`] = { t: 's', v: PresencaStatusEnum.CADASTRO_NOVO };
-            worksheet[`${LayoutPlanilhaEnum.DATA_REGISTRO_COLUNA}${newRow}`] = { t: 's', v: retornaDataConsulta() };
+            worksheet[`${LayoutPlanilhaEnum.DATA_REGISTRO_COLUNA}${newRow}`] = { t: 's', v: Utils.obterDataConsulta() };
 
             retorno.id = 1
             retorno.mensagem = `CPF ${pessoa.cpf} cadastrado com sucesso`
@@ -157,21 +144,6 @@ export class PessoaService {
       console.error('Erro ao atualizar o status:', error);
       throw error;
     }
-
-    function retornaDataConsulta()
-    {
-      const dataAtual = new Date();
-
-      const dia = String(dataAtual.getDate()).padStart(2, '0');
-      const mes = String(dataAtual.getMonth() + 1).padStart(2, '0'); // O mês é baseado em zero
-      const ano = String(dataAtual.getFullYear());
-      const hora = String(dataAtual.getHours()).padStart(2, '0');
-      const minutos = String(dataAtual.getMinutes()).padStart(2, '0');
-      const segundos = String(dataAtual.getSeconds()).padStart(2, '0');
-
-      return `${dia}/${mes}/${ano} ${hora}:${minutos}:${segundos}`;
-    }
-
   }
 
   static async listar() : Promise<any> {
@@ -202,6 +174,57 @@ export class PessoaService {
       throw error;
     }
     return jsonArrayComIgreja;
+  }
+
+  static async informarJustificativa(param) : Promise<string> {
+    const dataHoraConsulta = Utils.obterDataConsulta()
+    let acheiPessoa : Boolean = true;
+
+    const cpfSemFormatacao = param.cpf.replace(/[.-]/g,'').replace('-','.')
+    
+    try {
+
+      const workbook = XLSX.readFile(FILE_NAME_BASE);
+
+      const sheetName = workbook.SheetNames[0];
+      const worksheet = workbook.Sheets[sheetName];
+
+      const sheetRef = worksheet['!ref'];
+      if (sheetRef) {
+        const range = XLSX.utils.decode_range(sheetRef);
+
+        for (let R = range.s.r + 1; R <= range.e.r + 1; ++R) {
+          
+          //CPF
+          const cpfCelula = worksheet[`${ LayoutPlanilhaEnum.CPF_COLUNA }${R}`];
+          const cpfSemFormatacaoEXCEL : string | null = cpfCelula ? String(cpfCelula.v).replace(/[.-]/g,'') : null;
+
+          if (cpfSemFormatacaoEXCEL == cpfSemFormatacao) {
+            
+            worksheet[`${LayoutPlanilhaEnum.STATUS_COLUNA}${R}`] = { t: 's', v: PresencaStatusEnum.JUSTIFICADO };
+            worksheet[`${LayoutPlanilhaEnum.DATA_REGISTRO_COLUNA}${R}`] = { t: 's', v: dataHoraConsulta };
+            worksheet[`${LayoutPlanilhaEnum.JUSTIFICATIVA}${R}`] = { t: 's', v: param.justificativa };
+
+            acheiPessoa = true
+            break;
+          } else {acheiPessoa = false}
+        }
+
+        XLSX.writeFile(workbook, FILE_NAME_BASE);
+      } else {
+        console.error('A referência da planilha ("!ref") não foi encontrada no arquivo Excel.');
+      }
+
+    } catch (error){
+      console.error('Erro ao atualizar o status:', error);
+      throw error;
+    }
+
+    if (!acheiPessoa){
+      throw new Error("Pessoa não encontrada")
+    }
+
+    return "Sucesso"
 
   }
 }

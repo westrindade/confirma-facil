@@ -20,7 +20,7 @@ async function onConfirm(){
     $('#icon-search').addClass('d-none');
     $('#icon-loading').removeClass('d-none');
 
-    const { data } = await axios.post('/pessoa/consultar', {
+    const { data } = await axios.post('/pessoa/confirmar', {
       cpf: cpf,
     })
 
@@ -53,22 +53,6 @@ async function onConfirm(){
   } catch (error) {
     console.error('Erro na solicitação:', error);
   }
-
-}
-
-function showMessage(message, msgType) {
-
-  const alertList = $('#alert-list');
-  alertList.html('')
-  alertList.removeClass().addClass('alert alert-' + msgType);;
-
-  let icon = '';
-  if (msgType == 'danger'){
-    icon = 'bi-x-square-fill'
-  } else {
-    icon = 'bi-check-square-fill'
-  }
-  alertList.append('<span class="bi '+ icon +'" style="font-size: 1.4em;"></span> <span>' + message + '</span><br>');
 }
 
 async function onAdd(){
